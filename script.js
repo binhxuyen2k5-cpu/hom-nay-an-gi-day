@@ -1,4 +1,3 @@
-// --- KHỞI TẠO TRẠNG THÁI VÀ DỮ LIỆU --- 
 let isLoggedIn = false; 
 let favorites = JSON.parse(localStorage.getItem("favorites")) || []; 
 let historyList = JSON.parse(localStorage.getItem("historyList")) || [];
@@ -18,7 +17,7 @@ const systemDefaults = {
         {  
             name: "Lẩu Thái",  
             img: "https://cdn.tgdd.vn/2020/09/CookProduct/3-cach-nau-lau-ga-chua-cay-thom-ngon-hit-ha-ngay-mua-lanh-1-1200x676.jpg",  
-            recipe: `NGUYÊN LIỆU\n1. 1 lít nước dùng, sả, riềng, lá chanh.\n2. Tương lẩu Thái, tôm/thịt bò, nấm, rau, bún.\n\nCÁCH LÀM\n1. Nấu nước dùng với sả, riềng, lá chanh trong 15 phút.\n2. Cho tương lẩu Thái và nêm gia vị.\n3. Khi ăn nhúng thịt, hải sản và rau vào nồi.`  
+            recipe: `NGUYÊN LIỆU\n1. 1 lít nước dùng, sả, riềng, lá chanh.\n2. Tương lẩu Thái, tôm/thịt bò, nấm, rau, bún.\n\nCÁCH LÀM\n1. Nấu nước dùng với sả, riềng, lá chanh trong 15 phút.\n2. Cho tương lẩu Thái and nêm gia vị.\n3. Khi ăn nhúng thịt, hải sản và rau vào nồi.`  
         }, 
         {  
             name: "Nướng BBQ",  
@@ -46,7 +45,7 @@ const systemDefaults = {
             recipe: `NGUYÊN LIỆU\n1. Gà, bột mì, bột bắp, trứng, gia vị.\n\nCÁCH LÀM\n1. Ướp gà, nhúng qua trứng rồi lăn bột.\n2. Chiên ngập dầu đến khi vàng giòn.`  
         } 
     ], 
-    drink: [ 
+   drink: [ 
         {  
             name: "Trà Sữa",  
             img: "https://bizweb.dktcdn.net/100/519/595/files/1-180559f8-1ce7-43b7-83ce-a37eac803791.jpg?v=1744966178923",  
@@ -69,7 +68,7 @@ const systemDefaults = {
         }, 
         {  
             name: "Trà Đào",  
-            img: "https://images.unsplash.com/photo-1556881286-fc6915169721?w=500",
+            img: "https://cooponline.vn/tin-tuc/wp-content/uploads/2025/10/tra-dao-cam-sa-cong-thuc-pha-che-chuan-vi.png",
             recipe: `NGUYÊN LIỆU\n1. Trà, đào ngâm, nước đường.\n\nCÁCH LÀM\n1. Pha trà, thêm nước đào và đào miếng vào.\n2. Thêm đá và khuấy đều.`  
         }, 
         {  
@@ -97,7 +96,6 @@ const bodyBgBlur = document.getElementById("bodyBgBlur");
 const UIColors = ["#2c3e50", "#d35400", "#2980b9", "#8e44ad", "#27ae60", "#e67e22", "#f39c12", "#c0392b"]; 
 const size = 350; const center = size / 2; let currentDeg = 0; let audioContext = null; 
  
-// --- QUẢN LÝ ĐIỀU HƯỚNG TABS SINGLE PAGE ---
 function handleRouting() {
     const hash = window.location.hash || '#trangchu';
     document.querySelectorAll("section").forEach(sec => {
@@ -115,11 +113,9 @@ window.addEventListener('load', () => {
     renderListUI();
 });
 
-// --- AUDIO LOGIC ---
 function startAudio() { if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)(); } 
 function playTick() { startAudio(); if (!audioContext) return; let osc = audioContext.createOscillator(); let gain = audioContext.createGain(); osc.type = 'triangle'; osc.frequency.setValueAtTime(600, audioContext.currentTime); osc.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.04); gain.gain.setValueAtTime(0.15, audioContext.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.04); osc.connect(gain); gain.connect(audioContext.destination); osc.start(); osc.stop(audioContext.currentTime + 0.04); } 
  
-// --- QUẢN LÝ TÀI KHOẢN & AUTH ---
 function switchForm(formType) { 
     const loginForm = document.getElementById("loginFormContainer"); 
     const registerForm = document.getElementById("registerFormContainer"); 
@@ -206,7 +202,6 @@ function renderHistory() {
     `).join('');
 }
  
-// --- LOGIC VÒNG QUAY --- 
 function changeCategory(type) { 
     if (isSpinning) return; 
     activeTab = type; 
@@ -236,7 +231,6 @@ function renderWheel() {
         ctx.fill(); 
         ctx.strokeStyle = "#1e1510"; ctx.lineWidth = 2; ctx.stroke(); 
  
-        // Vẽ Text
         ctx.save(); 
         ctx.translate(center, center); 
         ctx.rotate(startAng + segAngle / 2); 
@@ -246,7 +240,6 @@ function renderWheel() {
         ctx.fillText(dataset[i].name, center - 35, 5);
         ctx.restore();
 
-        // Tạo ảnh phủ góc cho segment
         let midDeg = (i * (360 / total)) + ((360 / total) / 2);
         let imgRadius = center - 80;
         let imgX = center + imgRadius * Math.cos(midDeg * Math.PI / 180);
@@ -261,7 +254,6 @@ function renderWheel() {
     } 
 } 
 
-// --- LOGIC XOAY VÒNG QUAY KHI ẤN NÚT (ĐÃ SỬA LỖI LỆCH KẾT QUẢ) ---
 function executeSpin() {     
     const list = database[activeTab];     
     if (list.length === 0 || isSpinning) return; 
@@ -269,50 +261,37 @@ function executeSpin() {
     isSpinning = true;     
     spinActionBtn.disabled = true; 
  
-    // Tính toán góc quay ngẫu nhiên (ít nhất 4 vòng = 1440 độ + góc dư)
     const extraDeg = Math.floor(Math.random() * 360) + 1440;      
     currentDeg += extraDeg; 
  
-    // Thực hiện hiệu ứng xoay bằng cách đổi transform CSS
     canvas.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)";     
     canvas.style.transform = `rotate(${-currentDeg}deg)`;     
     imageOverlay.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)";     
     imageOverlay.style.transform = `rotate(${-currentDeg}deg)`; 
  
-    // Chạy âm thanh click mechanical
     let currentTickAngle = 0;     
     const interval = setInterval(() => {         
         currentTickAngle += 15;         
         if (currentTickAngle < extraDeg) {             
-            playTickSound();         
+            playTickSound(); 
         } else {             
-            clearInterval(interval);         
+            clearInterval(interval); 
         }     
     }, 40); 
- 
-    // Xử lý khi vòng quay dừng lại sau 4 giây
     setTimeout(() => {         
         isSpinning = false;         
         spinActionBtn.disabled = false; 
  
-        // --- SỬA THUẬT TOÁN TÍNH CHÍNH XÁC Ô TRÚNG THƯỞNG TẠI ĐÂY ---
-        // Góc của mỗi một ô quạt (Ví dụ: 6 ô là 60 độ/ô)
         const arcDeg = 360 / list.length;         
 
-        // Quy đổi tổng góc quay thực tế về khoảng từ 0 đến 359 độ
         const normalizedDeg = currentDeg % 360;  
 
-        // Kim chỉ nằm ở đỉnh (góc 270 độ). Ta tính toán góc tương đối của kim trên vòng quay sau khi dừng.
-        // Công thức chuẩn: (Góc kim chỉ + Góc xoay) % 360
         const pointerTargetDeg = (270 + normalizedDeg) % 360;
 
-        // Lấy góc mục tiêu chia cho số độ của từng ô để tìm ra index chuẩn xác nhất
         const winnerIndex = Math.floor(pointerTargetDeg / arcDeg) % list.length; 
  
-        // Gán vật phẩm trúng thưởng theo đúng index vừa tính
         currentWinner = list[winnerIndex]; 
  
-        // Lưu vào lịch sử nếu đã đăng nhập
         if (isLoggedIn) {             
             if (!historyList.some(h => h.name === currentWinner.name)) {                 
                 historyList.unshift(currentWinner);                 
@@ -320,9 +299,28 @@ function executeSpin() {
             }         
         } 
  
-        // Hiển thị bảng chúc mừng trúng món ăn/thức uống
         showResultModal(currentWinner);     
     }, 4000); 
+}
+function playTickSound() {     
+    try {         
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();         
+        
+        let osc = audioContext.createOscillator();         
+        let gain = audioContext.createGain();         
+        
+        osc.type = "sine"; 
+        osc.frequency.setValueAtTime(600, audioContext.currentTime); 
+        
+        gain.gain.setValueAtTime(0.1, audioContext.currentTime); 
+        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05); 
+        
+        osc.connect(gain);         
+        gain.connect(audioContext.destination);         
+        
+        osc.start();         
+        osc.stop(audioContext.currentTime + 0.05); 
+    } catch(e) {} 
 }
 function showResultModal(item) {
     document.getElementById("resultCategoryText").innerText = activeTab === 'food' ? "MÓN ĐÃ CHỌN" : "NƯỚC ĐÃ CHỌN";
@@ -354,10 +352,9 @@ function toggleFavoriteCurrentWinner() {
     }
     localStorage.setItem("favorites", JSON.stringify(favorites));
     renderFavorites();
-    showResultModal(currentWinner);
-} 
+    showResultModal(currentWinner); 
+}
  
-// --- QUẢN LÝ HÀNG ĐỢI DANH SÁCH MÓN --- 
 function renderListUI() { 
     let dataset = database[activeTab]; 
     listUiContainer.innerHTML = dataset.map((item, index) => `
@@ -389,7 +386,6 @@ function removeItem(idx) { database[activeTab].splice(idx, 1); renderWheel(); re
 function shuffleCurrentList() { database[activeTab].sort(() => Math.random() - 0.5); renderWheel(); renderListUI(); } 
 function resetToSystemDefault() { database[activeTab] = systemDefaults[activeTab].map(item => ({ ...item })); renderWheel(); renderListUI(); } 
  
-// --- TRA CỨU CÔNG THỨC ---
 function findRecipe() {
     let query = document.getElementById("recipeSearchInput").value.trim().toLowerCase();
     let displayArea = document.getElementById("recipeDisplayArea");
