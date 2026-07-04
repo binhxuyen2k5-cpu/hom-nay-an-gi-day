@@ -294,15 +294,21 @@ function executeSpin() {
         }
     }, (4000 / expectedTicks));
 
-    setTimeout(() => {
+   setTimeout(() => {
         clearInterval(tickInterval);
         isSpinning = false;
         spinActionBtn.disabled = false;
 
-        // Tính toán phần tử chiến thắng dựa vào kim ở hướng 12h
+        // Tính toán phần tử chiến thắng dựa vào kim ở hướng 12h (Đã sửa lại góc chuẩn)
         let normalizedDeg = (currentDeg % 360 + 360) % 360;
-        let index = Math.floor(((normalizedDeg + 90) % 360) / segmentDeg);
-        
+        // Vòng quay quay ngược chiều kim đồng hồ nên ta lấy 360 trừ đi, và cộng thêm góc lệch 90 độ của kim 12h
+        let actualTargetDeg = (360 - normalizedDeg + 90) % 360; 
+        let index = Math.floor(actualTargetDeg / segmentDeg);
+
+        // Khớp lại index chính xác với mảng dữ liệu
+        if (index >= totalSegments) index = totalSegments - 1;
+        if (index < 0) index = 0;
+
         currentWinner = dataset[index];
         showResultModal(currentWinner);
 
