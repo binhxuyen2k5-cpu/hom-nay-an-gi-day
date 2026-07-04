@@ -17,4 +17,4 @@ Website hỗ trợ người dùng quyết định thực đơn mỗi ngày thôn
 ## 👤 Thông tin sinh viên
 - Họ và tên: Thái Bình Xuyên
 - MSSV: 231A290014
-- Trường: Đại học Văn Hiến
+- Trường Đại học Văn Hiến
