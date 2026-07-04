@@ -49,7 +49,7 @@ const systemDefaults = {
     drink: [ 
         {  
             name: "Trà Sữa",  
-            img: "https://icdn.dantri.com.vn/thumb_w/1280/2018/8/17/photo-2-15344660253391589797590.jpg",  
+            img: "https://mochacoffee.vn/bi-mat-ve-tra-sua-thuc-uong-van-nguoi-me-hien-nay-post5",  
             recipe: `NGUYÊN LIỆU\n1. Trà túi lọc, sữa tươi, sữa đặc, trân châu.\n\nCÁCH LÀM\n1. Hãm trà, thêm sữa tươi và sữa đặc.\n2. Thêm trân châu đã luộc và đá viên.`  
         }, 
         {  
