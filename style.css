@@ -1,18 +1,15 @@
-/* --- CONFIG CHUNG THEO THEME CAM ẤM --- */ 
 html { 
     scroll-behavior: smooth; 
 } 
-
-body {
+ body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: transparent; 
-    color: #ffffff;          
+    color: #ffffff;         
     position: relative;
     transition: background 0.5s ease;
 }
 
-/* LỚP NỀN ĐỘNG */
 .body-bg-blur {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -24,7 +21,6 @@ body {
     transition: background-image 1s ease, filter 0.5s ease;
 }
  
-/* FIXED NAVBAR */ 
 .navbar { 
     position: fixed; 
     top: 0; left: 0; right: 0; 
@@ -48,7 +44,6 @@ body {
 .btn-login { color: #fff; text-decoration: none; font-size: 14px; cursor: pointer; } 
 .btn-logout { color: #ff4d4d; text-decoration: none; font-size: 14px; cursor: pointer; font-weight: bold; display: none; } 
  
-/* CẤU TRÚC SECTION */ 
 section { 
     min-height: 100vh; 
     padding: 100px 50px 40px 50px; 
@@ -69,7 +64,6 @@ section.active {
     display: flex;
 } 
  
-/* TRANG CHỦ & VÒNG QUAY */ 
 #trangchu { background: transparent; } 
 .main-content { max-width: 1200px; width: 100%; display: flex; flex-wrap: wrap; gap: 50px; justify-content: center; align-items: center; margin-top: 20px; } 
       
@@ -106,7 +100,6 @@ section.active {
     box-shadow: 0 0 5px rgba(0,0,0,0.5); 
 } 
  
-/* KẾT QUẢ HIỂN THỊ BANNER POPUP */ 
 .result-modal { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     background: rgba(0, 0, 0, 0.7); 
@@ -124,7 +117,6 @@ section.active {
 .btn-close-result { background: #ff9f43; color: #fff; padding: 12px 40px; border-radius: 25px; font-weight: bold; cursor: pointer; border: none; font-size: 15px; box-shadow: 0 5px 15px rgba(255,159,103,0.4); transition: 0.2s; } 
 .btn-close-result:hover { background: #e0852b; } 
  
-/* PANEL ĐIỀU KHIỂN */ 
 .control-panel { flex: 1; min-width: 360px; background: rgba(40, 30, 25, 0.6); backdrop-filter: blur(5px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); } 
 .tab-header { display: flex; background: #1a110b; border-radius: 10px; padding: 5px; margin-bottom: 20px; } 
 .tab-button { flex: 1; background: transparent; color: #888; border: none; padding: 12px; font-weight: bold; font-size: 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; } 
@@ -144,7 +136,6 @@ section.active {
 .btn-sub { flex: 1; background: #2a1e17; color: #eee; padding: 10px; border-radius: 8px; border: 1px solid #3a2a20; cursor: pointer; transition: 0.2s; } 
 .btn-sub:hover { background: #3a2a20; } 
  
-/* TRANG CON KHÁC */ 
 #congthuc, 
 #yeuthich, 
 #lichsu, 
@@ -161,13 +152,11 @@ section.active {
 .search-bar-box input:focus { border-color: #ff9f43; } 
 .search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ff9f43; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; } 
  
-/* DANH SÁCH HIỂN THỊ THỰC TẾ KHI ĐĂNG NHẬP */ 
 .history-favorite-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; margin-top: 20px; } 
 .mini-card { background: #261b13; border: 1px solid #3a2a20; border-radius: 12px; overflow: hidden; text-align: center; padding-bottom: 12px; } 
 .mini-card img { width: 100%; height: 120px; object-fit: cover; } 
 .mini-card span { display: block; margin-top: 10px; font-weight: bold; font-size: 14px; color: #ff9f43; } 
  
-/* MODAL ĐĂNG NHẬP / ĐĂNG KÝ */ 
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; } 
 .modal-overlay.open { opacity: 1; pointer-events: auto; } 
 .login-box { background: #1a1a1a; width: 360px; padding: 35px; border-radius: 15px; border: 1px solid #2a2a2a; text-align: center; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); } 
@@ -180,11 +169,3 @@ section.active {
 .form-group input:focus { border-color: #ff9f43; } 
 .btn-submit-login { width: 100%; background: #ff9f43; color: #fff; font-size: 15px; font-weight: bold; padding: 12px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.2s; } 
 .btn-submit-login:hover { background: #e0852b; }
-
-/* CẤU HÌNH GIAO DIỆN PHẦN GIỚI THIỆU */
-#gioithieu { 
-    padding: 80px 20px; 
-    background: linear-gradient(135deg, #1a1918 0%, #534c48 35%, #d35400 70%, #7a1f0d 100%); 
-    color: #ffffff; 
-    line-height: 1.8; 
-}
