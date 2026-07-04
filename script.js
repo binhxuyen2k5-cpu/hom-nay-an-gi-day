@@ -49,32 +49,32 @@ const systemDefaults = {
     drink: [ 
         {  
             name: "Trà Sữa",  
-            img: backupDrinkImg,  
+            img: "https://eggyolk.vn/wp-content/uploads/2024/08/Cach-lam-tra-sua-bang-tra-o-long-tea-plus-don-gian-tai-nha.jpg",  
             recipe: `NGUYÊN LIỆU\n1. Trà túi lọc, sữa tươi, sữa đặc, trân châu.\n\nCÁCH LÀM\n1. Hãm trà, thêm sữa tươi và sữa đặc.\n2. Thêm trân châu đã luộc và đá viên.`  
         }, 
         {  
             name: "Cà Phê Muối",  
-            img: backupDrinkImg,  
+            img: "https://kingcoffee.com.vn/wp-content/uploads/2026/02/cach-pha-ca-phe-muoi-1536x690.jpg",  
             recipe: `NGUYÊN LIỆU\n1. Cà phê phin, kem béo, muối biển.\n\nCÁCH LÀM\n1. Pha cà phê phin.\n2. Đánh bông kem béo với muối.\n3. Rót lớp kem lên trên mặt cà phê.`  
         }, 
         {  
             name: "Nước Cam",  
-            img: backupDrinkImg,  
+            img: "https://benhvientantao.com/wp-content/uploads/2024/01/nuoc-cam-giau-dinh-duong.png",  
             recipe: `NGUYÊN LIỆU\n1. Cam tươi, đường/mật ong, một chút muối.\n\nCÁCH LÀM\n1. Vắt cam, thêm đường và xíu muối cho đậm vị.\n2. Khuấy đều với đá.`  
         }, 
         {  
             name: "Sinh Tố Bơ",  
-            img: backupDrinkImg,  
+            img: "https://www.huongnghiepaau.com/wp-content/uploads/2017/07/sinh-to-bo-dua-thom-beo.jpg",  
             recipe: `NGUYÊN LIỆU\n1. Bơ chín, sữa đặc, sữa tươi, đá bào.\n\nCÁCH LÀM\n1. Xay nhuyễn bơ với các loại sữa và đá.`  
         }, 
         {  
             name: "Trà Đào",  
-            img: backupDrinkImg,  
+            img: "https://www.huongnghiepaau.com/wp-content/uploads/2024/07/cach-lam-tra-dao-dam.jpg",
             recipe: `NGUYÊN LIỆU\n1. Trà, đào ngâm, nước đường.\n\nCÁCH LÀM\n1. Pha trà, thêm nước đào và đào miếng vào.\n2. Thêm đá và khuấy đều.`  
         }, 
         {  
             name: "Soda Mint",  
-            img: backupDrinkImg,  
+            img: "https://www.utahfarmbureau.org/Article/Live/TitleImage/2783/081023-192642",  
             recipe: `NGUYÊN LIỆU\n1. Soda, siro bạc hà, lá bạc hà.\n\nCÁCH LÀM\n1. Cho siro vào ly, thêm đá, rót soda vào.\n2. Trang trí lá bạc hà.`  
         } 
     ] 
