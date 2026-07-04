@@ -261,72 +261,69 @@ function renderWheel() {
     } 
 } 
 
-function executeSpin() {
-    if(isSpinning) return;
-    let dataset = database[activeTab];
-    if(dataset.length === 0) return alert("Danh sách trống!");
+// --- LOGIC XOAY VÒNG QUAY KHI ẤN NÚT (ĐÃ SỬA LỖI LỆCH KẾT QUẢ) ---
+function executeSpin() {     
+    const list = database[activeTab];     
+    if (list.length === 0 || isSpinning) return; 
+ 
+    isSpinning = true;     
+    spinActionBtn.disabled = true; 
+ 
+    // Tính toán góc quay ngẫu nhiên (ít nhất 4 vòng = 1440 độ + góc dư)
+    const extraDeg = Math.floor(Math.random() * 360) + 1440;      
+    currentDeg += extraDeg; 
+ 
+    // Thực hiện hiệu ứng xoay bằng cách đổi transform CSS
+    canvas.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)";     
+    canvas.style.transform = `rotate(${-currentDeg}deg)`;     
+    imageOverlay.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.1, 1)";     
+    imageOverlay.style.transform = `rotate(${-currentDeg}deg)`; 
+ 
+    // Chạy âm thanh click mechanical
+    let currentTickAngle = 0;     
+    const interval = setInterval(() => {         
+        currentTickAngle += 15;         
+        if (currentTickAngle < extraDeg) {             
+            playTickSound();         
+        } else {             
+            clearInterval(interval);         
+        }     
+    }, 40); 
+ 
+    // Xử lý khi vòng quay dừng lại sau 4 giây
+    setTimeout(() => {         
+        isSpinning = false;         
+        spinActionBtn.disabled = false; 
+ 
+        // --- SỬA THUẬT TOÁN TÍNH CHÍNH XÁC Ô TRÚNG THƯỞNG TẠI ĐÂY ---
+        // Góc của mỗi một ô quạt (Ví dụ: 6 ô là 60 độ/ô)
+        const arcDeg = 360 / list.length;         
 
-    isSpinning = true;
-    spinActionBtn.disabled = true;
+        // Quy đổi tổng góc quay thực tế về khoảng từ 0 đến 359 độ
+        const normalizedDeg = currentDeg % 360;  
 
-    let totalSegments = dataset.length;
-    let segmentDeg = 360 / totalSegments;
-    
-    // Tạo gia tốc ngẫu nhiên quay tối thiểu 5 vòng
-    let randomExtraDeg = Math.floor(Math.random() * 360);
-    let totalRotation = 1800 + randomExtraDeg;
-    currentDeg += totalRotation;
+        // Kim chỉ nằm ở đỉnh (góc 270 độ). Ta tính toán góc tương đối của kim trên vòng quay sau khi dừng.
+        // Công thức chuẩn: (Góc kim chỉ + Góc xoay) % 360
+        const pointerTargetDeg = (270 + normalizedDeg) % 360;
 
-    canvas.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.25, 1)";
-    canvas.style.transform = `rotate(-${currentDeg}deg)`;
-    imageOverlay.style.transition = "transform 4s cubic-bezier(0.1, 0.8, 0.25, 1)";
-    imageOverlay.style.transform = `rotate(-${currentDeg}deg)`;
-
-    // Hiệu ứng tiếng Tick âm thanh dựa trên góc quay ước lượng
-    let currentTickCount = 0;
-    let expectedTicks = Math.floor(totalRotation / segmentDeg);
-    let tickInterval = setInterval(() => {
-        currentTickCount++;
-        if(currentTickCount <= expectedTicks) {
-            playTick();
-        } else {
-            clearInterval(tickInterval);
-        }
-    }, (4000 / expectedTicks));
-
-    setTimeout(() => {
-        clearInterval(tickInterval);
-        isSpinning = false;
-        spinActionBtn.disabled = false;
-
-        // --- THUẬT TOÁN TÍNH TOÁN THEO KIM 12 GIỜ ĐÃ ĐƯỢC CHUẨN HÓA BIẾN ---
-        // 1. Đưa góc quay về khoảng 0 - 360 độ
-        let normalizedDeg = (currentDeg % 360 + 360) % 360;
-
-        // 2. Bù trừ góc quay ngược chiều (-) và góc lệch 90 độ của kim 12h
-        let actualTargetDeg = (360 - normalizedDeg + 90) % 360; 
-
-        // 3. Tính vị trí phần tử trong mảng dữ liệu của bạn
-        let index = Math.floor(actualTargetDeg / segmentDeg);
-
-        // Ràng buộc index để không bị lỗi tràn mảng dữ liệu
-        if (index >= totalSegments) index = totalSegments - 1;
-        if (index < 0) index = 0;
-
-        // 4. Gán người chiến thắng và hiển thị Modal kết quả của bạn
-        currentWinner = dataset[index];
-        showResultModal(currentWinner);
-
-        // Thêm vào lịch sử quay
-        if(isLoggedIn) {
-            historyList.unshift(currentWinner);
-            if(historyList.length > 8) historyList.pop();
-            localStorage.setItem("historyList", JSON.stringify(historyList));
-            renderHistory();
-        }
-    }, 4000);
+        // Lấy góc mục tiêu chia cho số độ của từng ô để tìm ra index chuẩn xác nhất
+        const winnerIndex = Math.floor(pointerTargetDeg / arcDeg) % list.length; 
+ 
+        // Gán vật phẩm trúng thưởng theo đúng index vừa tính
+        currentWinner = list[winnerIndex]; 
+ 
+        // Lưu vào lịch sử nếu đã đăng nhập
+        if (isLoggedIn) {             
+            if (!historyList.some(h => h.name === currentWinner.name)) {                 
+                historyList.unshift(currentWinner);                 
+                renderFavoritesAndHistory();             
+            }         
+        } 
+ 
+        // Hiển thị bảng chúc mừng trúng món ăn/thức uống
+        showResultModal(currentWinner);     
+    }, 4000); 
 }
-
 function showResultModal(item) {
     document.getElementById("resultCategoryText").innerText = activeTab === 'food' ? "MÓN ĐÃ CHỌN" : "NƯỚC ĐÃ CHỌN";
     document.getElementById("resultName").innerText = item.name;
