@@ -294,21 +294,26 @@ function executeSpin() {
         }
     }, (4000 / expectedTicks));
 
-   setTimeout(() => {
+    setTimeout(() => {
         clearInterval(tickInterval);
         isSpinning = false;
         spinActionBtn.disabled = false;
 
-        // Tính toán phần tử chiến thắng dựa vào kim ở hướng 12h (Đã sửa lại góc chuẩn)
+        // --- THUẬT TOÁN TÍNH TOÁN THEO KIM 12 GIỜ ĐÃ ĐƯỢC CHUẨN HÓA BIẾN ---
+        // 1. Đưa góc quay về khoảng 0 - 360 độ
         let normalizedDeg = (currentDeg % 360 + 360) % 360;
-        // Vòng quay quay ngược chiều kim đồng hồ nên ta lấy 360 trừ đi, và cộng thêm góc lệch 90 độ của kim 12h
+
+        // 2. Bù trừ góc quay ngược chiều (-) và góc lệch 90 độ của kim 12h
         let actualTargetDeg = (360 - normalizedDeg + 90) % 360; 
+
+        // 3. Tính vị trí phần tử trong mảng dữ liệu của bạn
         let index = Math.floor(actualTargetDeg / segmentDeg);
 
-        // Khớp lại index chính xác với mảng dữ liệu
+        // Ràng buộc index để không bị lỗi tràn mảng dữ liệu
         if (index >= totalSegments) index = totalSegments - 1;
         if (index < 0) index = 0;
 
+        // 4. Gán người chiến thắng và hiển thị Modal kết quả của bạn
         currentWinner = dataset[index];
         showResultModal(currentWinner);
 
