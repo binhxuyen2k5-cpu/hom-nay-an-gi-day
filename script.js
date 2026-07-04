@@ -49,7 +49,7 @@ const systemDefaults = {
     drink: [ 
         {  
             name: "Trà Sữa",  
-            img: "https://images.unsplash.com/photo-1541658016709-82535e94bc69?w=500",  
+            img: "https://icdn.dantri.com.vn/thumb_w/1280/2018/8/17/photo-2-15344660253391589797590.jpg",  
             recipe: `NGUYÊN LIỆU\n1. Trà túi lọc, sữa tươi, sữa đặc, trân châu.\n\nCÁCH LÀM\n1. Hãm trà, thêm sữa tươi và sữa đặc.\n2. Thêm trân châu đã luộc và đá viên.`  
         }, 
         {  
@@ -64,7 +64,7 @@ const systemDefaults = {
         }, 
         {  
             name: "Sinh Tố Bơ",  
-            img: "https://images.unsplash.com/photo-1540348563548-666b968a9451?w=500",  
+            img: "https://s3.remagan.com/pro.remagan.uploads/product/2023/11/coconut-avocado-smoothie-sinh-to-bo-dua-20231116163937_6555e359ebafa.webp",  
             recipe: `NGUYÊN LIỆU\n1. Bơ chín, sữa đặc, sữa tươi, đá bào.\n\nCÁCH LÀM\n1. Xay nhuyễn bơ với các loại sữa và đá.`  
         }, 
         {  
