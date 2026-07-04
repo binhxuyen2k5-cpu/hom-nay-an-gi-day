@@ -1,0 +1,189 @@
+<!DOCTYPE html> 
+<html lang="vi"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Ăn Gì Hôm Nay Đây | Vòng quay quyết định bữa ngon</title> 
+    <link rel="stylesheet" href="style.css"> 
+</head> 
+<body> 
+ 
+<div class="body-bg-blur" id="bodyBgBlur"></div> 
+ 
+<div class="navbar"> 
+    <div class="logo">HÔM NAY<span>ĂN GÌ ĐÂY</span></div> 
+    <div class="nav-links"> 
+        <a href="#trangchu">Trang chủ</a> 
+        <a href="#congthuc">Công thức</a> 
+        <a href="#yeuthich">Yêu thích</a> 
+        <a href="#lichsu">Lịch sử</a> 
+        <a href="#gioithieu">Giới thiệu</a> 
+    </div> 
+    <div class="nav-buttons"> 
+        <button class="btn-random" onclick="window.location.hash='#trangchu'">🎲 Quay ngẫu nhiên</button> 
+        <div class="btn-login" id="navLoginBtn" onclick="toggleModal(true)">👤 Đăng nhập</div> 
+        <div class="btn-logout" id="navLogoutBtn" onclick="handleLogout()">🚪 Đăng xuất</div> 
+    </div> 
+</div> 
+ 
+<section id="trangchu" class="active"> 
+    <div class="main-content"> 
+        <div class="wheel-container-block"> 
+            <div class="wheel-outer"> 
+                <div class="wheel-pointer"></div> 
+                <canvas id="wheelCanvas" width="350" height="350"></canvas> 
+                <div id="wheelImageOverlay"></div> 
+            </div> 
+            <button id="spinActionBtn" class="btn-main-spin" onclick="executeSpin()">QUAY NGAY</button> 
+        </div> 
+ 
+        <div class="control-panel"> 
+            <div class="tab-header"> 
+                <button id="tabFood" class="tab-button active" onclick="changeCategory('food')">🍖 ĐỒ ĂN</button> 
+                <button id="tabDrink" class="tab-button" onclick="changeCategory('drink')">🥤 ĐỒ UỐNG</button> 
+            </div> 
+             
+            <div class="input-group"> 
+                <div class="input-box"> 
+                    <input type="text" id="inputElement" placeholder="Nhập nhanh tên món mới..." onkeypress="checkEnterKey(event)"> 
+                </div> 
+                <button onclick="addNewItem()" style="background:#ff9f43; color:#fff; border:none; padding:12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size: 15px;">+ THÊM VÀO DANH SÁCH</button> 
+            </div> 
+ 
+            <div class="item-list-wrapper" id="listUiContainer"></div> 
+            <div class="btn-group-bottom"> 
+                <button class="btn-sub" onclick="shuffleCurrentList()">🔀 Trộn món</button> 
+                <button class="btn-sub" onclick="resetToSystemDefault()">🔄 Mặc định</button> 
+            </div> 
+        </div> 
+    </div> 
+</section> 
+ 
+<div class="result-modal" id="resultModal"> 
+    <div class="result-content"> 
+        <div class="result-category-title" id="resultCategoryText">ĐÃ CHỌN</div> 
+         
+        <div class="result-card-wrapper"> 
+            <img src="" id="resultImage" alt="Kết quả"> 
+            <div class="result-card-overlay"> 
+                <div id="resultName">BÁNH XÈO</div> 
+            </div> 
+        </div> 
+         
+        <div style="display:flex;gap:15px;justify-content:center;"> 
+            <button id="favoriteBtn" onclick="toggleFavoriteCurrentWinner()" style="background:#ff4d4d; color:white; border:none; padding:12px 20px; border-radius:25px; cursor:pointer;"> 
+                ❤️ Yêu thích 
+            </button> 
+            <button class="btn-close-result" onclick="closeResultModal()"> 
+                OK, ĐI ĂN THÔI! 
+            </button> 
+        </div> 
+    </div> 
+</div> 
+ 
+<section id="congthuc"> 
+    <div class="section-title">TRA CỨU CÔNG THỨC</div> 
+    <div class="search-bar-box"> 
+        <input type="text" id="recipeSearchInput" placeholder="Nhập tên món ăn (VD: Phở, Bánh Mì)..." oninput="findRecipe()"> 
+        <button class="search-icon">🍳</button> 
+    </div> 
+     
+    <div id="recipeDisplayArea" style="margin-top: 40px; max-width: 700px; width: 100%; display: none; background: rgba(40,30,25,0.7); padding: 30px; border-radius: 20px;"> 
+        <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom: 15px;"> 
+            <h2 id="recipeTitle" style="color:#ff9f43;margin:0;"></h2> 
+            <button id="recipeFavoriteBtn" style="background:#ff4d4d;color:white;border:none;padding:10px 15px;border-radius:20px;cursor:pointer;"> 
+                ❤️ Yêu thích 
+            </button> 
+        </div> 
+        <img id="recipeImageTag" src="" style="width: 100%; height: 300px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;"> 
+        <div style="text-align: left; color: #eee; line-height: 1.8;"> 
+            <h3>📝 Nguyên liệu & Cách làm:</h3> 
+            <p id="recipeContent" style="white-space: pre-line;"></p> 
+        </div> 
+    </div> 
+</section> 
+ 
+<section id="yeuthich"> 
+    <div class="section-title">Món Ăn Yêu Thích</div> 
+    <div class="section-subtitle" id="favoriteSubText">Đăng nhập để xem danh sách yêu thích.</div> 
+    <div id="favoriteContainer" class="history-favorite-grid"></div> 
+</section> 
+ 
+<section id="lichsu"> 
+    <div class="section-title">Lịch Sử Xem</div> 
+    <div class="section-subtitle" id="historySubText">Đăng nhập để xem lịch sử.</div> 
+    <div id="historyContainer" class="history-favorite-grid"></div> 
+</section> 
+ 
+<section id="gioithieu"> 
+    <div style="max-width: 900px; margin: auto;"> 
+        <h2 style="color: #ff9f43; font-size: 36px; text-align: center; margin-bottom: 50px;">CÂU CHUYỆN CỦA "HÔM NAY ĂN GÌ ĐÂY"</h2> 
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;"> 
+            <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 15px;"> 
+                <h3 style="color: #ff9f43;">💡 Khởi nguồn ý tưởng</h3> 
+                <p>Đã bao lần bạn đứng trước tủ lạnh, tự hỏi "Hôm nay ăn gì đây?" rồi lại kết thúc bằng một món ăn quen thuộc đến nhàm chán? Tôi cũng từng như vậy. Đó là một vòng lặp mệt mỏi mà tôi tin rằng ai trong chúng ta cũng từng trải qua.</p> 
+            </div> 
+            <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 15px;"> 
+                <h3 style="color: #ff9f43;">🤝 Người bạn đồng hành</h3> 
+                <p>Website này không chỉ là một công cụ ngẫu nhiên, mà là một "người bạn đồng hành" tận tâm. Tôi tạo ra nó để giải tỏa cơn đau đầu mỗi ngày của chính mình và của bạn, biến những quyết định nhỏ nhặt trở nên nhẹ nhàng hơn.</p> 
+            </div> 
+            <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 15px;"> 
+                <h3 style="color: #ff9f43;">✨ Tầm nhìn của chúng tôi</h3> 
+                <p>Tôi mong rằng, thay vì sự phân vân, mỗi bữa cơm từ nay sẽ là một niềm vui, một sự bất ngờ đầy thú vị. Chúng tôi hướng đến việc xây dựng một thư viện ẩm thực cá nhân hóa, nơi mỗi người đều tìm thấy cảm hứng nấu nướng riêng.</p> 
+            </div> 
+            <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 15px;"> 
+                <h3 style="color: #ff9f43;">🚀 Cam kết phát triển</h3> 
+                <p>Dự án này là tâm huyết của tôi và sẽ không ngừng cải tiến. Từ những công thức truyền thống đến các xu hướng ẩm thực mới, mọi tính năng đều được tối ưu để mang lại trải nghiệm tốt nhất cho căn bếp của bạn.</p> 
+            </div> 
+        </div> 
+ 
+        <div style="margin-top: 60px; text-align: center; border-top: 1px solid #333; padding-top: 40px;"> 
+            <h3 style="color: #ff9f43; margin-bottom: 20px;">KẾT NỐI VỚI NGƯỜI SÁNG LẬP</h3> 
+            <p style="margin-bottom: 25px; color: #ccc;">Sự đóng góp và phản hồi của bạn là động lực giúp "Hôm Nay Ăn Gì ĐÂY" hoàn thiện hơn mỗi ngày. Hãy để lại tin nhắn nếu bạn có bất kỳ ý tưởng thú vị nào nhé!</p> 
+             
+            <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;"> 
+                <span style="color: #fff;">👤 Thái Bình Xuyênn</span> 
+                <span style="color: #fff;">✉️ xuyenvhu@gmail.com</span> 
+                <span style="color: #fff;">📞 +84 966 371 697</span> 
+                <span style="color: #fff;">📍 Thành phố Hồ Chí Minh</span> 
+            </div> 
+        </div> 
+    </div> 
+</section>
+ 
+<div class="modal-overlay" id="loginModal" onclick="if(event.target===this) toggleModal(false)"> 
+    <div class="login-box"> 
+        <button class="close-modal" onclick="toggleModal(false)">❌</button> 
+         
+        <div id="loginFormContainer"> 
+            <h2>Đăng nhập</h2> 
+            <p>Truy cập tài khoản của bạn</p> 
+            <form onsubmit="handleLoginSubmit(event)"> 
+                <div class="form-group"><label>Email</label><input type="email" placeholder="email@example.com" value="ABC123@GMAIL.COM" required></div> 
+                <div class="form-group"><label>Mật khẩu</label><input type="password" placeholder="********" value="123456" required></div> 
+                <button type="submit" class="btn-submit-login">Đăng nhập</button> 
+            </form> 
+            <div style="margin-top: 20px; font-size: 13px; color: #aaa;"> 
+                Chưa có tài khoản? <a href="javascript:void(0)" onclick="switchForm('register')" style="color: #ff9f43; text-decoration: none; font-weight: bold;">Đăng ký ngay</a> 
+            </div> 
+        </div> 
+ 
+        <div id="registerFormContainer" style="display: none;"> 
+            <h2>Đăng ký</h2> 
+            <p>Tạo tài khoản mới miễn phí</p> 
+            <form onsubmit="event.preventDefault(); alert('Đăng ký thành công! Hãy đăng nhập nhé.'); switchForm('login');"> 
+                <div class="form-group"><label>Họ và tên</label><input type="text" placeholder="Nguyễn Văn A" required></div> 
+                <div class="form-group"><label>Email</label><input type="email" placeholder="email@example.com" required></div> 
+                <div class="form-group"><label>Mật khẩu</label><input type="password" placeholder="Tối thiểu 6 ký tự" minlength="6" required></div> 
+                <button type="submit" class="btn-submit-login">Đăng ký tài khoản</button> 
+            </form> 
+            <div style="margin-top: 20px; font-size: 13px; color: #aaa;"> 
+                Đã có tài khoản? <a href="javascript:void(0)" onclick="switchForm('login')" style="color: #ff9f43; text-decoration: none; font-weight: bold;">Đăng nhập ngay</a> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
+ 
+<script src="script.js"></script> 
+</body> 
+</html>

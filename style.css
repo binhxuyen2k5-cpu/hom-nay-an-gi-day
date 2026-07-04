@@ -1,0 +1,190 @@
+/* --- CONFIG CHUNG THEO THEME CAM ẤM --- */ 
+html { 
+    scroll-behavior: smooth; 
+} 
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: transparent; 
+    color: #ffffff;          
+    position: relative;
+    transition: background 0.5s ease;
+}
+
+/* LỚP NỀN ĐỘNG */
+.body-bg-blur {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('https://stc.bindo.vn/data/hinh-tranh/bia/tranh-nha-hang-bbq%20(43).jpg');    
+    background-size: cover; 
+    background-position: center;
+    filter: brightness(0.5);    
+    z-index: -1;
+    transition: background-image 1s ease, filter 0.5s ease;
+}
+ 
+/* FIXED NAVBAR */ 
+.navbar { 
+    position: fixed; 
+    top: 0; left: 0; right: 0; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 50px; 
+    background: rgba(30, 20, 15, 0.75);  
+    backdrop-filter: blur(10px); 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5); 
+    z-index: 999; 
+} 
+.logo { font-size: 22px; font-weight: bold; letter-spacing: 1px; } 
+.logo span { color: #ff9f43; margin-left: 5px; }  
+.nav-links { display: flex; gap: 25px; } 
+.nav-links a { color: #bbb; text-decoration: none; font-size: 14px; font-weight: 600; text-transform: uppercase; transition: 0.3s; } 
+.nav-links a:hover { color: #ff9f43; } 
+.nav-buttons { display: flex; align-items: center; gap: 15px; } 
+.btn-random { background: #ff9f43; color: #fff; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; cursor: pointer; } 
+.btn-login { color: #fff; text-decoration: none; font-size: 14px; cursor: pointer; } 
+.btn-logout { color: #ff4d4d; text-decoration: none; font-size: 14px; cursor: pointer; font-weight: bold; display: none; } 
+ 
+/* CẤU TRÚC SECTION */ 
+section { 
+    min-height: 100vh; 
+    padding: 100px 50px 40px 50px; 
+    box-sizing: border-box; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    opacity: 0; 
+    transform: translateY(25px); 
+    transition: opacity 0.5s ease, transform 0.5s ease; 
+    display: none;
+} 
+ 
+section.active { 
+    opacity: 1; 
+    transform: translateY(0); 
+    display: flex;
+} 
+ 
+/* TRANG CHỦ & VÒNG QUAY */ 
+#trangchu { background: transparent; } 
+.main-content { max-width: 1200px; width: 100%; display: flex; flex-wrap: wrap; gap: 50px; justify-content: center; align-items: center; margin-top: 20px; } 
+      
+.wheel-container-block { 
+    flex: 1.2; min-width: 400px; 
+    display: flex; flex-direction: column; align-items: center; 
+    background: rgba(40, 30, 25, 0.6); backdrop-filter: blur(5px); padding: 30px; border-radius: 20px; 
+    border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+} 
+.wheel-outer { position: relative; width: 350px; height: 350px; margin-bottom: 25px; } 
+.wheel-pointer { 
+    position: absolute; top: -15px; left: 50%; transform: translateX(-50%); 
+    width: 0; height: 0; border-left: 15px solid transparent; 
+    border-right: 15px solid transparent; border-top: 30px solid #ff4d4d; 
+    z-index: 10; filter: drop-shadow(0px 0px 8px rgba(255,77,77,0.8)); 
+} 
+#wheelCanvas, #wheelImageOverlay { 
+    position: absolute; top: 0; left: 0; 
+    width: 350px; height: 350px; border-radius: 50%; 
+} 
+#wheelImageOverlay { pointer-events: none; overflow: hidden; width: 350px; height: 350px; } 
+ 
+.wheel-img-segment { 
+    position: absolute; top: 50%; left: 50%; 
+    width: 42px; height: 42px; 
+    margin-top: -21px; margin-left: -21px; 
+    transform-origin: center center; 
+} 
+.wheel-img-segment img { 
+    width: 100%; height: 100%; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 2px solid #fff; 
+    box-shadow: 0 0 5px rgba(0,0,0,0.5); 
+} 
+ 
+/* KẾT QUẢ HIỂN THỊ BANNER POPUP */ 
+.result-modal { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0, 0, 0, 0.7); 
+    display: flex; justify-content: center; align-items: center; z-index: 2000; 
+    opacity: 0; pointer-events: none; transition: 0.5s ease; 
+} 
+.result-modal.open { opacity: 1; pointer-events: auto; } 
+.result-content { text-align: center; max-width: 600px; width: 100%; padding: 20px; transform: translateY(30px); transition: 0.5s ease; } 
+.result-modal.open .result-content { transform: translateY(0); } 
+.result-category-title { font-size: 50px; font-weight: 900; letter-spacing: 5px; color: #ff9f43; text-transform: uppercase; margin-bottom: 20px; font-family: 'Arial Black', Gadget, sans-serif; text-shadow: 0 4px 10px rgba(0,0,0,0.5); } 
+.result-card-wrapper { position: relative; width: 320px; height: 220px; margin: 0 auto 30px auto; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.6); border: 2px solid #ff9f43; } 
+#resultImage { width: 100%; height: 100%; object-fit: cover; } 
+.result-card-overlay { position: absolute; bottom: 0; left: 0; right: 0; top: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0) 100%); display: flex; justify-content: center; align-items: flex-end; padding-bottom: 20px; } 
+#resultName { font-size: 28px; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; padding: 0 10px; text-align: center; } 
+.btn-close-result { background: #ff9f43; color: #fff; padding: 12px 40px; border-radius: 25px; font-weight: bold; cursor: pointer; border: none; font-size: 15px; box-shadow: 0 5px 15px rgba(255,159,103,0.4); transition: 0.2s; } 
+.btn-close-result:hover { background: #e0852b; } 
+ 
+/* PANEL ĐIỀU KHIỂN */ 
+.control-panel { flex: 1; min-width: 360px; background: rgba(40, 30, 25, 0.6); backdrop-filter: blur(5px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); } 
+.tab-header { display: flex; background: #1a110b; border-radius: 10px; padding: 5px; margin-bottom: 20px; } 
+.tab-button { flex: 1; background: transparent; color: #888; border: none; padding: 12px; font-weight: bold; font-size: 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; } 
+.tab-button.active { background: #ff9f43; color: #fff; } 
+.input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; } 
+.input-box { display: flex; gap: 10px; width: 100%; box-sizing: border-box; } 
+.input-box input { flex: 1; background: #1a110b; border: 1px solid #3a2a20; padding: 12px; color: #fff; border-radius: 8px; outline: none; box-sizing: border-box; min-width: 0; } 
+.input-box input:focus { border-color: #ff9f43; } 
+.item-list-wrapper { max-height: 220px; overflow-y: auto; background: #1a110b; border-radius: 8px; padding: 8px; margin-bottom: 20px; } 
+.list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #261b13; margin-bottom: 6px; border-radius: 6px; border-left: 4px solid #ff9f43; } 
+.list-item-info { display: flex; align-items: center; gap: 15px; } 
+.list-item-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #3a2a20; } 
+.list-item button { background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 18px; } 
+.btn-main-spin { background: #ff9f43; color: #fff; font-size: 18px; font-weight: bold; padding: 12px 50px; border-radius: 30px; border: none; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 159, 67, 0.3); transition: 0.3s ease; } 
+.btn-main-spin:disabled { background: #555; color: #aaa; cursor: not-allowed; box-shadow: none; } 
+.btn-group-bottom { display: flex; gap: 10px; } 
+.btn-sub { flex: 1; background: #2a1e17; color: #eee; padding: 10px; border-radius: 8px; border: 1px solid #3a2a20; cursor: pointer; transition: 0.2s; } 
+.btn-sub:hover { background: #3a2a20; } 
+ 
+/* TRANG CON KHÁC */ 
+#congthuc, 
+#yeuthich, 
+#lichsu, 
+#gioithieu { 
+    background: transparent; 
+    backdrop-filter: blur(12px); 
+    -webkit-backdrop-filter: blur(12px); 
+    border-top: 1px solid rgba(255,255,255,0.05); 
+} 
+.section-title { font-size: 36px; color: #ff9f43; margin-bottom: 10px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; } 
+.section-subtitle { color: #ccc; font-size: 16px; margin-bottom: 30px; } 
+.search-bar-box { position: relative; width: 100%; max-width: 550px; } 
+.search-bar-box input { width: 100%; box-sizing: border-box; background: #1a110b; border: 1px solid #3a2a20; padding: 15px 50px 15px 20px; color: #fff; border-radius: 30px; font-size: 16px; outline: none; } 
+.search-bar-box input:focus { border-color: #ff9f43; } 
+.search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ff9f43; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; } 
+ 
+/* DANH SÁCH HIỂN THỊ THỰC TẾ KHI ĐĂNG NHẬP */ 
+.history-favorite-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; margin-top: 20px; } 
+.mini-card { background: #261b13; border: 1px solid #3a2a20; border-radius: 12px; overflow: hidden; text-align: center; padding-bottom: 12px; } 
+.mini-card img { width: 100%; height: 120px; object-fit: cover; } 
+.mini-card span { display: block; margin-top: 10px; font-weight: bold; font-size: 14px; color: #ff9f43; } 
+ 
+/* MODAL ĐĂNG NHẬP / ĐĂNG KÝ */ 
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s; } 
+.modal-overlay.open { opacity: 1; pointer-events: auto; } 
+.login-box { background: #1a1a1a; width: 360px; padding: 35px; border-radius: 15px; border: 1px solid #2a2a2a; text-align: center; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); } 
+.close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #888; font-size: 18px; cursor: pointer; } 
+.login-box h2 { color: #ff9f43; margin: 0 0 5px 0; } 
+.login-box p { color: #777; font-size: 13px; margin-bottom: 25px; } 
+.form-group { text-align: left; margin-bottom: 20px; } 
+.form-group label { display: block; font-size: 13px; margin-bottom: 8px; color: #ccc; } 
+.form-group input { width: 100%; box-sizing: border-box; background: #111; border: 1px solid #333; padding: 12px; color: #fff; border-radius: 8px; outline: none; } 
+.form-group input:focus { border-color: #ff9f43; } 
+.btn-submit-login { width: 100%; background: #ff9f43; color: #fff; font-size: 15px; font-weight: bold; padding: 12px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: 0.2s; } 
+.btn-submit-login:hover { background: #e0852b; }
+
+/* CẤU HÌNH GIAO DIỆN PHẦN GIỚI THIỆU */
+#gioithieu { 
+    padding: 80px 20px; 
+    background: linear-gradient(135deg, #1a1918 0%, #534c48 35%, #d35400 70%, #7a1f0d 100%); 
+    color: #ffffff; 
+    line-height: 1.8; 
+}
